@@ -59,7 +59,7 @@ Nếu chạy local và muốn app tự nhận tài liệu mà không chọn thư
 python3 -m http.server 8080
 ```
 
-Sau đó mở `http://localhost:8080/app/`. App sẽ tìm `docs/` ở cùng cấp với `app/`. File WMA của quyển `わかるビジネス日本語` phụ thuộc codec của trình duyệt; Edge trên Windows thường tương thích tốt hơn Chrome/Safari.
+Sau đó mở `http://localhost:8080/app/`. App sẽ tìm `docs/` ở cùng cấp với `app/`. 51 track WMA gốc của quyển `わかるビジネス日本語` đã được chuyển sang MP3 để phát được trên các trình duyệt hiện đại.
 
 Không nên commit trực tiếp thư mục `docs`: tổng dung lượng xấp xỉ 1 GB và có PDF lớn hơn giới hạn file 100 MB của GitHub. Nếu sau này muốn học trên nhiều thiết bị, dùng kho lưu trữ riêng có quyền truy cập phù hợp rồi cấu hình/triển khai tài liệu bên cạnh app; đừng public tài liệu có bản quyền.
 

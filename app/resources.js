@@ -16,8 +16,8 @@ export const books=[
     description:'Giáo trình nhập môn BJT theo chức năng giao tiếp: giới thiệu, trình bày ý định, hỏi, bắt chuyện, nhờ vả, từ chối, xin phép, xác nhận, khuyên và chào hỏi.',
     focus:['Hội thoại công sở','Chức năng giao tiếp','Nền tảng BJT'],
     pdfs:[{label:'Giáo trình',pages:155,path:'QUYỂN 1. わかるビジネス日本語quyển xanh/わかるビジネス日本語.pdf'}],
-    audio:range(51,n=>({label:`Track ${n}`,path:`QUYỂN 1. わかるビジネス日本語quyển xanh/${pad(n)} Track ${n}.wma`,format:'WMA'})),
-    note:'Audio gốc là WMA. Chrome/Safari có thể không phát; Edge trên Windows thường tương thích tốt hơn.'
+    audio:range(51,n=>({label:`Track ${n}`,path:`QUYỂN 1. わかるビジネス日本語quyển xanh/${pad(n)} Track ${n}.mp3`,format:'MP3'})),
+    note:'Audio WMA gốc đã được chuyển sang MP3 để phát ổn định trong Chrome, Edge, Safari và trình duyệt di động.'
   },
   {
     id:'nihongo30',order:3,phase:1,kind:'Giáo trình thực hành',accent:'orange',
