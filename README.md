@@ -9,6 +9,7 @@ Web app học cá nhân bằng tiếng Việt và tiếng Nhật. Frontend HTML/
 - 4 bài BJT: email, kính ngữ, lịch hẹn, đọc số liệu.
 - 12 câu BJT tự biên soạn: chấm đáp án, giải thích, luyện 10 phút, lưu câu sai và luyện lại.
 - Thư viện BJT từ thư mục `docs`: 9 PDF (1.036 trang), 525 track audio, lộ trình 4 giai đoạn và tiến độ theo từng tài liệu.
+- Toàn bộ 525 track đã được phân loại theo nguồn: 285 track có đáp án gốc để chấm tương tác, 113 track hướng dẫn/hội thoại không chấm và 127 track quyển vàng thiếu phần đáp án trong PDF nên được khóa chấm thay vì đoán.
 - Luyện nghe bằng giọng Nhật của thiết bị; hiện thông báo nếu thiếu giọng. Transcript có thể mở để đọc.
 - Bài làm tự luận tự lưu, gia sư AI hội thoại/chấm bài khi backend đã cấu hình.
 - Ghi chú, lịch sử hội thoại, xuất/nhập dữ liệu JSON.
@@ -60,6 +61,8 @@ python3 -m http.server 8080
 ```
 
 Sau đó mở `http://localhost:8080/app/`. App sẽ tìm `docs/` ở cùng cấp với `app/`. 51 track WMA gốc của quyển `わかるビジネス日本語` đã được chuyển sang MP3 để phát được trên các trình duyệt hiện đại.
+
+Trong trình phát, ký hiệu `◉` là track có đáp án gốc và có thể chọn 1–4 để kiểm tra; `·` là track mẫu/script không chấm; `⚠` là track chưa thể chấm vì file sách hiện có không chứa đáp án. Mỗi kết quả đều dẫn về trang PDF dùng để đối chiếu. App không tự tạo đáp án cho phần thiếu nguồn.
 
 Không nên commit trực tiếp thư mục `docs`: tổng dung lượng xấp xỉ 1 GB và có PDF lớn hơn giới hạn file 100 MB của GitHub. Nếu sau này muốn học trên nhiều thiết bị, dùng kho lưu trữ riêng có quyền truy cập phù hợp rồi cấu hình/triển khai tài liệu bên cạnh app; đừng public tài liệu có bản quyền.
 
@@ -136,6 +139,7 @@ Bản sao lưu chứa bài làm, nhận xét AI, ghi chú và hội thoại: gi�
 ```text
 app/                    Frontend và giáo trình
 app/resources.js        Danh mục sách, PDF, audio và thứ tự học BJT
+app/track-guides.js     Ánh xạ từng track tới section, trang nguồn và đáp án gốc
 app/resources.css       Giao diện thư viện/reader/player
 docs/                   PDF và audio cá nhân, không deploy công khai
 server/index.js         API gia sư Node.js, không phụ thuộc thư viện
