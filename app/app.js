@@ -66,7 +66,7 @@ function trackGuideVisual(book,trackIndex,guide){
   if(!page)return '';
   const label=`${book.title} · ${book.audio[trackIndex]?.label||'Track '+(trackIndex+1)} · trang nguồn ${page}`;
   if(!imageSrc)return `<div class="track-visual-empty"><b>Chưa tìm thấy ảnh riêng của track</b><span>Chọn lại thư mục docs sau khi chạy công cụ tạo ảnh track.</span></div>`;
-  return `<figure class="track-visual"><a href="${esc(imageSrc)}" target="_blank" rel="noopener"><img src="${esc(imageSrc)}" alt="${esc(label)}" loading="lazy"></a><figcaption><b>${esc(label)}</b><span>Bấm vào ảnh để phóng to.</span></figcaption></figure>`;
+  return `<figure class="track-visual"><button type="button" class="track-image-button" data-action="zoom-track-image" data-src="${esc(imageSrc)}" data-label="${esc(label)}" aria-label="Phóng to ảnh ${esc(label)}"><img src="${esc(imageSrc)}" alt="${esc(label)}" loading="lazy"></button><figcaption><b>${esc(label)}</b><span>Bấm vào ảnh để phóng to.</span></figcaption></figure>`;
 }
 function trackGuideView(book,trackIndex,guide){
   if(!guide)return '<div class="track-guide is-missing"><b>Chưa có dữ liệu đối chiếu cho track này.</b></div>';
@@ -93,8 +93,19 @@ function settings(){return `<h1>Cài đặt không gian học</h1><div class="gr
 function render(){const [page,id]=(location.hash.slice(1)||'home').split('/');$('#nav').innerHTML=nav.map(([p,i,t])=>`<a href="#${p}" class="${p===page||page==='book'&&p==='library'?'active':''}"><b>${i}</b>${t}</a>`).join('');$('#breadcrumb').textContent='Không gian học / '+(page==='book'?'Thư viện BJT':nav.find(x=>x[0]===page)?.[2]||'Thực hành');$('#main').innerHTML=page==='home'?home():['brse','bjt'].includes(page)?track(page):page==='library'?library():page==='book'?bookView(id):page==='lesson'?lesson(id):page==='quiz'?quizView():page==='review'?review():page==='coach'?coach():page==='settings'?settings():home();}
 async function ask(messages,context){if(!state.endpoint)throw Error('Chưa kết nối AI. Mở Cài đặt để cấu hình backend.');const token=sessionStorage.getItem('huy-token');if(!token)throw Error('Nhập mã truy cập backend trong Cài đặt.');const r=await fetch(state.endpoint.replace(/\/$/,'')+'/api/tutor',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:JSON.stringify({messages:messages.slice(-12),context}),signal:AbortSignal.timeout(60000)});const data=await r.json().catch(()=>({}));if(!r.ok)throw Error(data.error||'Backend chưa phản hồi hợp lệ. Kiểm tra địa chỉ và cấu hình.');if(typeof data.text!=='string')throw Error('Phản hồi AI không hợp lệ.');return data.text;}
 function startQuiz(list=questions,timed=false){quiz={list:[...list],index:0,selected:null,checked:false,correct:0,answered:0,deadline:timed?Date.now()+600000:null};if(location.hash==='#quiz')render();else go('quiz')}
+function openTrackImage(src,label){
+  const dialog=document.createElement('dialog');
+  dialog.className='track-image-dialog';
+  dialog.innerHTML=`<div class="track-image-dialog-head"><b>${esc(label)}</b><button type="button" data-action="close-track-image" aria-label="Đóng ảnh">×</button></div><div class="track-image-dialog-body"><img src="${esc(src)}" alt="${esc(label)}"></div>`;
+  dialog.addEventListener('click',event=>{if(event.target===dialog)dialog.close()});
+  dialog.addEventListener('close',()=>dialog.remove(),{once:true});
+  document.body.append(dialog);
+  dialog.showModal();
+}
 document.addEventListener('input',e=>{const id=location.hash.split('/')[1];if(e.target.id==='answer'){state.drafts[id]=e.target.value;save()}if(e.target.id==='notes'){state.notes=e.target.value;save()}});
 document.addEventListener('click',async e=>{const b=e.target.closest('[data-action]');if(!b)return;const a=b.dataset.action;
+if(a==='zoom-track-image'){openTrackImage(b.dataset.src,b.dataset.label);return}
+if(a==='close-track-image'){b.closest('dialog')?.close();return}
 if(a==='connect-resources')$('#resource-files')?.click();
 if(a==='select-pdf'){const book=books.find(item=>item.id===b.dataset.book);if(book){updateBookProgress(book,{currentPdf:Number(b.dataset.index)});render()}}
 if(a==='toggle-pdf'){const book=books.find(item=>item.id===b.dataset.book);if(book){const progress=bookProgress(book),index=Number(b.dataset.index),openedPdfs=progress.openedPdfs.includes(index)?progress.openedPdfs.filter(item=>item!==index):[...progress.openedPdfs,index];updateBookProgress(book,{openedPdfs});render()}}
