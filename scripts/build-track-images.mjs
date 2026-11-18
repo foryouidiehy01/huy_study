@@ -26,7 +26,11 @@ const crops=new Map([
   ['official4:15','650:480:0:0'],
   ['official4:16','650:500:0:430'],
   ['official4:17','720:480:650:0'],
-  ['official4:18','720:500:650:430']
+  ['official4:18','720:500:650:430'],
+  ['official4:21','iw/2:ih*0.25:iw/2:ih*0.53'],
+  ['official4:22','iw/2:ih*0.20:iw/2:ih*0.80'],
+  ['official4:33','iw:ih*0.32:0:ih*0.38'],
+  ['official4:34','iw:ih*0.30:0:ih*0.70']
 ]);
 
 for(const book of books.filter(item=>item.audio.length)){
@@ -38,8 +42,19 @@ for(const book of books.filter(item=>item.audio.length)){
     const pdfIndex=Number.isInteger(guide.visualPdfIndex)?guide.visualPdfIndex:(guide.sourcePdfIndex||0);
     const pdf=book.pdfs[pdfIndex];
     if(!pdf||!Number.isInteger(page))continue;
-    jobs.push({bookId:book.id,index,page,pdfPath:path.join(docs,...pdf.path.split('/'))});
+    jobs.push({bookId:book.id,index,page,kind:guide.kind,pdfPath:path.join(docs,...pdf.path.split('/'))});
   }
+}
+
+const questionGroups=new Map();
+for(const job of jobs.filter(item=>item.kind==='question'||item.kind==='missing')){
+  const key=`${job.pdfPath}|${job.page}`;
+  if(!questionGroups.has(key))questionGroups.set(key,[]);
+  questionGroups.get(key).push(job);
+}
+for(const group of questionGroups.values()){
+  group.sort((a,b)=>a.index-b.index);
+  group.forEach((job,index)=>Object.assign(job,{groupIndex:index,groupSize:group.length}));
 }
 
 await mkdir(cache,{recursive:true});
@@ -83,6 +98,30 @@ for(const job of jobs){
   const target=path.join(dir,`track-${String(job.index+1).padStart(3,'0')}.jpg`);
   const crop=crops.get(`${job.bookId}:${job.index}`);
   if(crop)await run('ffmpeg',['-hide_banner','-loglevel','error','-y','-i',source,'-vf',`crop=${crop}`,'-q:v','2',target]);
+  else if(job.groupSize>1){
+    let filter;
+    if(job.bookId==='moshi'){
+      // Every shared spread starts with one practice panel before the questions.
+      const rows=Math.ceil((job.groupSize+1)/2);
+      const slot=job.groupIndex+1;
+      filter=`crop=iw/2:ih/${rows}:floor(${slot}/${rows})*iw/2:mod(${slot}\\,${rows})*ih/${rows}`;
+    }
+    else if(job.bookId==='chokai'&&job.groupSize===6){
+      // Six numbered photos are laid out row-major in a 2 x 3 grid.
+      filter=`crop=iw/2:ih/3:mod(${job.groupIndex}\\,2)*iw/2:floor(${job.groupIndex}/2)*ih/3`;
+    }
+    else if(job.bookId==='official4'){
+      if(job.groupSize===8){
+        const row=job.groupIndex%4;
+        const y=['0','ih*0.25','ih*0.52','ih*0.76'][row];
+        const height=['ih*0.25','ih*0.27','ih*0.24','ih*0.24'][row];
+        filter=`crop=iw/2:${height}:floor(${job.groupIndex}/4)*iw/2:${y}`;
+      }
+      else filter=`crop=iw:ih/${job.groupSize}:0:${job.groupIndex}*ih/${job.groupSize}`;
+    }
+    else filter=`crop=iw:ih/${job.groupSize}:0:${job.groupIndex}*ih/${job.groupSize}`;
+    await run('ffmpeg',['-hide_banner','-loglevel','error','-y','-i',source,'-vf',filter,'-q:v','2',target]);
+  }
   else await copyFile(source,target);
 }
 

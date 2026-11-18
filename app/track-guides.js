@@ -42,9 +42,9 @@ putQuestions(official4,{start:53,section:'第2部 聴読解 · セクション3'
 putVisualPages(official4,3,[1,1,1,1,1]);
 putVisualPages(official4,10,[2,2,2,2,2,2,3,3,3,3]);
 putVisualPages(official4,22,[3,3,4,4,4,4,4,4,4,4]);
-putVisualPages(official4,34,[5,5,5,5,5]);
-putVisualPages(official4,41,[6,6,7,7,8,8,9,9,10,10]);
-putVisualPages(official4,53,[11,12,13,14,15,16,17,18,19,20]);
+putVisualPages(official4,34,[5,5,6,6,6]);
+putVisualPages(official4,41,[7,8,9,9,10,10,11,11,12,12]);
+putVisualPages(official4,53,[13,14,15,16,17,18,19,20,21,22]);
 
 const kato=fill(79,n=>sample(n<=42?'CD1 · Hướng dẫn / ví dụ':'CD2 · Hướng dẫn / ví dụ',n<=42?97:124));
 putQuestions(kato,{start:4,section:'第1部 聴解 · セクション1',answers:[1,2,3,3,4,4,4,3,2,1],pages:[99,99,99,100,100,100,101,101,101,102]});
@@ -77,10 +77,12 @@ putVisualPages(moshi,45,[13,13,13,14,14,14,15,15,15,16,16,16,17,17,17]);
 putVisualPages(moshi,62,[18,18,18,19,19,19,20,20,20,21,21,21,22,22,22]);
 
 // The supplied gold-book scan ends at PDF page 84. It references answer pages
-// beyond the supplied scan, so every track stays explicitly unscored.
+// beyond the supplied scan, so every track stays explicitly unscored. The CD
+// badges printed beside each question provide the exact track-to-page mapping.
+const chokaiNote='PDF có bài nghe/câu hỏi nhưng phần đáp án được sách dẫn tới không nằm trong file đã cung cấp.';
 const chokai=[
-  ...fill(51,n=>missing(`CD1 · Track ${n}`,Math.min(35,1+Math.floor((n-1)*34/50)),'PDF có bài nghe/câu hỏi nhưng phần đáp án được sách dẫn tới không nằm trong file đã cung cấp.')),
-  ...fill(76,n=>missing(`CD2 · Track ${n}`,Math.min(84,36+Math.floor((n-1)*48/75)),'PDF có bài nghe/câu hỏi nhưng phần đáp án được sách dẫn tới không nằm trong file đã cung cấp.'))
+  ...fill(51,n=>missing(`CD1 · Track ${n}`,n<=24?Math.ceil(n/6):5+Math.floor((n-25)/3),chokaiNote)),
+  ...fill(76,n=>missing(`CD2 · Track ${n}`,n<=10?14+Math.floor((n-1)/2):n+8,chokaiNote))
 ];
 
 export const trackGuides={wakaru,nihongo30,official4,kato,official6,moshi,chokai};
