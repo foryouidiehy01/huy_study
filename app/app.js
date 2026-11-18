@@ -60,15 +60,27 @@ function trackGuideSource(book,guide){
   const base=assetUrl(pdf.path),label=`${pdf.label} · trang PDF ${guide.sourcePage}`;
   return base?`<a href="${esc(base+'#page='+guide.sourcePage)}" target="_blank" rel="noopener">Mở ${esc(label)} ↗</a>`:`<span>${esc(label)} · kết nối docs để mở đúng trang</span>`;
 }
+function trackGuideVisual(book,guide){
+  const page=guide?.visualPage||guide?.sourcePage;
+  const pdfIndex=Number.isInteger(guide?.visualPdfIndex)?guide.visualPdfIndex:(guide?.sourcePdfIndex||0);
+  const pdf=book.pdfs[pdfIndex],base=pdf?assetUrl(pdf.path):'';
+  if(!pdf||!page)return '';
+  const label=`${pdf.label} · trang PDF ${page}`;
+  if(!base)return `<div class="track-visual-empty"><b>Trang hình: ${esc(label)}</b><span>Kết nối thư mục docs để hình của đúng sách hiện tại đây.</span></div>`;
+  const src=`${base}#page=${page}&zoom=page-width&toolbar=1&navpanes=0`;
+  return `<details class="track-visual" open><summary>🖼 Xem hình / tài liệu của câu · ${esc(label)}</summary><iframe src="${esc(src)}" title="${esc('Hình câu hỏi — '+label)}"></iframe><div class="track-visual-actions"><a href="${esc(src)}" target="_blank" rel="noopener">Mở hình toàn màn hình ↗</a><span>Phóng to trong trình đọc để xem chữ và chi tiết ảnh.</span></div></details>`;
+}
 function trackGuideView(book,trackIndex,guide){
   if(!guide)return '<div class="track-guide is-missing"><b>Chưa có dữ liệu đối chiếu cho track này.</b></div>';
   const source=trackGuideSource(book,guide);
-  if(guide.kind==='sample')return `<div class="track-guide is-sample"><span class="track-kind">TRACK MẪU · KHÔNG CHẤM ĐIỂM</span><h3>${esc(guide.section)}</h3><p>${esc(guide.note)}</p>${source?`<div class="track-source">${source}</div>`:''}</div>`;
-  if(guide.kind==='missing')return `<div class="track-guide is-missing"><span class="track-kind">CHƯA THỂ CHẤM</span><h3>${esc(guide.section)}</h3><p>${esc(guide.note)}</p><p><b>Tao không tự đoán đáp án.</b> Khi có bản PDF chứa phần đáp án, metadata này có thể được bổ sung.</p>${source?`<div class="track-source">${source}</div>`:''}</div>`;
+  const visual=trackGuideVisual(book,guide);
+  if(guide.kind==='sample')return `<div class="track-guide is-sample"><span class="track-kind">TRACK MẪU · KHÔNG CHẤM ĐIỂM</span><h3>${esc(guide.section)}</h3><p>${esc(guide.note)}</p>${visual}${source?`<div class="track-source">${source}</div>`:''}</div>`;
+  if(guide.kind==='missing')return `<div class="track-guide is-missing"><span class="track-kind">CHƯA THỂ CHẤM</span><h3>${esc(guide.section)}</h3><p>${esc(guide.note)}</p><p><b>Tao không tự đoán đáp án.</b> Khi có bản PDF chứa phần đáp án, metadata này có thể được bổ sung.</p>${visual}${source?`<div class="track-source">${source}</div>`:''}</div>`;
   const session=trackSession(book.id,trackIndex),checked=session.checked,correct=checked&&session.selected===guide.answer;
   return `<div class="track-guide is-question">
     <div class="track-guide-head"><div><span class="track-kind">CÂU CÓ ĐÁP ÁN GỐC</span><h3>${esc(guide.section)} · Câu ${esc(guide.number)}</h3></div><span class="tag">Track ${trackIndex+1}</span></div>
-    <p>Nghe audio và xem câu/ảnh trong PDF, rồi chọn đáp án 1–4. Đáp án chỉ hiện sau khi kiểm tra.</p>
+    <p>Nghe audio, xem hình hoặc tài liệu đúng trang sách bên dưới, rồi chọn đáp án 1–4. Đáp án chỉ hiện sau khi kiểm tra.</p>
+    ${visual}
     <div class="track-answer-grid">${[1,2,3,4].map(answer=>`<button class="track-answer ${checked?(answer===guide.answer?'correct':answer===session.selected?'wrong':''):answer===session.selected?'selected':''}" data-action="track-guide-answer" data-book="${book.id}" data-index="${trackIndex}" data-answer="${answer}" ${checked?'disabled':''}>${answer}</button>`).join('')}</div>
     ${checked?`<div class="track-feedback ${correct?'is-correct':'is-wrong'}"><b>${correct?'✓ Đúng':'✕ Sai · Đáp án gốc là '+guide.answer}</b><p>${correct?'Kết quả khớp với đáp án của sách.':'Lựa chọn của mày không khớp đáp án nguồn. Tao không tự biên thêm lý do; hãy mở đúng trang bên dưới để đọc script/giải thích nguyên bản của sách.'}</p></div><button class="secondary" data-action="track-guide-reset" data-book="${book.id}" data-index="${trackIndex}">Làm lại câu này</button>`:`<button data-action="track-guide-check" data-book="${book.id}" data-index="${trackIndex}" ${session.selected===null?'disabled':''}>Kiểm tra đáp án</button>`}
     ${source?`<div class="track-source">Nguồn đối chiếu: ${source}</div>`:''}

@@ -12,6 +12,10 @@ function putQuestions(guides,{start,answers,section,pages,sourcePdfIndex=0,answe
   });
 }
 
+function putVisualPages(guides,start,pages,visualPdfIndex=0){
+  pages.forEach((visualPage,index)=>Object.assign(guides[start-1+index],{visualPage,visualPdfIndex}));
+}
+
 const wakaruAnswers=[
   1,3,2,3,2, 2,2,2,1,2, 1,2,4,2,2,
   2,4,3,3,3, 1,3,2,1,3, 3,3,2,3,3,
@@ -33,6 +37,14 @@ putQuestions(official4,{start:22,section:'第1部 聴解 · セクション3',an
 putQuestions(official4,{start:34,section:'第2部 聴読解 · セクション1',answers:[4,2,1,1,2],pages:66,sourcePdfIndex:1,answerPage:66});
 putQuestions(official4,{start:41,section:'第2部 聴読解 · セクション2',answers:[1,2,2,2,1,3,4,4,2,1],pages:66,sourcePdfIndex:1,answerPage:66});
 putQuestions(official4,{start:53,section:'第2部 聴読解 · セクション3',answers:[4,4,3,1,2,1,2,2,4,3],pages:66,sourcePdfIndex:1,answerPage:66});
+// The answer key is PDF page 66 in the answer edition. The pictures and
+// documents used while answering are in the separate problem PDF.
+putVisualPages(official4,3,[1,1,1,1,1]);
+putVisualPages(official4,10,[2,2,2,2,2,2,3,3,3,3]);
+putVisualPages(official4,22,[3,3,4,4,4,4,4,4,4,4]);
+putVisualPages(official4,34,[5,5,5,5,5]);
+putVisualPages(official4,41,[6,6,7,7,8,8,9,9,10,10]);
+putVisualPages(official4,53,[11,12,13,14,15,16,17,18,19,20]);
 
 const kato=fill(79,n=>sample(n<=42?'CD1 · Hướng dẫn / ví dụ':'CD2 · Hướng dẫn / ví dụ',n<=42?97:124));
 putQuestions(kato,{start:4,section:'第1部 聴解 · セクション1',answers:[1,2,3,3,4,4,4,3,2,1],pages:[99,99,99,100,100,100,101,101,101,102]});
@@ -40,6 +52,7 @@ putQuestions(kato,{start:16,section:'第1部 聴解 · セクション2',answers
 putQuestions(kato,{start:28,section:'第1部 聴解 · セクション3',answers:[2,2,2,3,1,1,4,1,3,1],pages:fill(10,n=>109+n)});
 putQuestions(kato,{start:44,section:'第2部 聴読解 · セクション1',answers:[1,1,4,4,3,4,2,2,2,1,3,4,2,1,3],pages:fill(15,n=>125+n)});
 putQuestions(kato,{start:61,section:'第2部 聴読解 · セクション2',answers:[1,4,2,4,4,3,3,2,1,4,3,2,3,2,1],pages:fill(15,n=>141+n)});
+kato.forEach(guide=>{if(guide.kind==='question')Object.assign(guide,{visualPage:guide.sourcePage,visualPdfIndex:0})});
 
 const official6=fill(71,n=>sample('Hướng dẫn / ví dụ của đề',n<39?66:93));
 putQuestions(official6,{start:2,section:'第1部 聴解 · セクション1',answers:[3,1,1,2,3,3,3,3,1,1],pages:[67,67,67,68,68,68,69,69,69,70]});
@@ -47,6 +60,7 @@ putQuestions(official6,{start:13,section:'第1部 聴解 · セクション2',an
 putQuestions(official6,{start:24,section:'第1部 聴解 · セクション3',answers:[2,3,3,4,1,2,1,2,2,3,2,1,2,2,4],pages:fill(15,n=>77+n)});
 putQuestions(official6,{start:40,section:'第2部 聴読解 · セクション1',answers:[2,4,3,4,1,1,3,2,4,2,1,3,3,4,1],pages:[94,94,95,95,96,97,98,99,100,101,102,103,104,105,106]});
 putQuestions(official6,{start:56,section:'第2部 聴読解 · セクション2',answers:[4,3,1,1,3,4,3,2,3,2,4,1,4,2,4],pages:fill(15,n=>107+n)});
+official6.forEach(guide=>{if(guide.kind==='question')Object.assign(guide,{visualPage:guide.sourcePage,visualPdfIndex:0})});
 
 const moshi=fill(76,n=>sample('Hướng dẫn / ví dụ của đề',33));
 putQuestions(moshi,{start:4,section:'第1部 聴解 · セクション1',answers:[3,3,1,2,3,2,1,4,2,4],pages:33,answerPage:33});
@@ -54,6 +68,13 @@ putQuestions(moshi,{start:16,section:'第1部 聴解 · セクション2',answer
 putQuestions(moshi,{start:28,section:'第1部 聴解 · セクション3',answers:[4,4,1,4,4,4,4,2,3,2,4,3,1,4,4],pages:33,answerPage:33});
 putQuestions(moshi,{start:45,section:'第2部 聴読解 · セクション1',answers:[3,4,4,2,3,4,3,1,1,1,3,4,1,3,4],pages:33,answerPage:33});
 putQuestions(moshi,{start:62,section:'第2部 聴読解 · セクション2',answers:[4,2,2,3,4,3,3,3,4,2,2,1,2,4,2],pages:33,answerPage:33});
+// In this scan each PDF page contains two printed book pages. The problem
+// pages are 8-43 in the printed book; PDF page 33 is only the answer table.
+putVisualPages(moshi,4,[4,4,4,4,4,5,5,5,5,5]);
+putVisualPages(moshi,16,[6,6,6,6,6,7,7,7,7,7]);
+putVisualPages(moshi,28,[8,8,8,9,9,9,10,10,10,11,11,11,12,12,12]);
+putVisualPages(moshi,45,[13,13,13,14,14,14,15,15,15,16,16,16,17,17,17]);
+putVisualPages(moshi,62,[18,18,18,19,19,19,20,20,20,21,21,21,22,22,22]);
 
 // The supplied gold-book scan ends at PDF page 84. It references answer pages
 // beyond the supplied scan, so every track stays explicitly unscored.
