@@ -29,6 +29,15 @@ export const books=[
     note:'Học theo bài trong sách; nghe lần đầu không nhìn chữ, lần hai đối chiếu và shadowing.'
   },
   {
+    id:'roleplayBasic',order:2,phase:1,kind:'Role-play sơ–trung cấp',accent:'orange',
+    title:'ロールプレイで学ぶビジネス日本語 初中級',jp:'場面に合わせて適切に話そう',
+    description:'Giáo trình nhập vai cho người học sơ–trung cấp, luyện cách nói phù hợp trong các tình huống như chào hỏi khi vào công ty, nghe điện thoại, xin lỗi, xin nghỉ và giao tiếp với đồng nghiệp.',
+    focus:['Role-play công sở','Điện thoại & xin lỗi','Phản xạ theo tình huống'],
+    pdfs:[{label:'Giáo trình sơ–trung cấp',pages:227,path:'BJT_New book/1. 初中級レベル－場面に合わせて適切に話そう－/ロールプレイで学ぶビジネス日本語 - 初中級レベル－場面に合わせて適切に話そう－ [Remake].pdf'}],
+    audio:range(34,n=>({label:`Track ${pad(n)}`,path:`BJT_New book/1. 初中級レベル－場面に合わせて適切に話そう－/Audio 初中級レベル－場面に合わせて適切に話そう－/${pad(n)}.mp3`,format:'MP3'})),
+    note:'Nghe mẫu, đối chiếu tình huống trong sách rồi đổi vai để luyện nói. Audio là phần đi kèm giáo trình, không phải đề thi BJT.'
+  },
+  {
     id:'official4',order:4,phase:3,kind:'Đề thi thử chính thức',accent:'gray',
     title:'BJT公式模擬テスト＆ガイド',jp:'Official Practice Test & Guide',
     description:'Bộ mô phỏng cấu trúc BJT gồm 聴解, 聴読解 và 読解; có bản đề, bản đáp án/hướng dẫn và audio tương ứng.',
@@ -68,6 +77,15 @@ export const books=[
     note:'Dùng sau ít nhất một đề hoàn chỉnh để chiến thuật gắn với lỗi thật của mày.'
   },
   {
+    id:'roleplayCareer',order:8,phase:1,kind:'Role-play trung cấp',accent:'blue',
+    title:'ロールプレイで学ぶビジネス日本語 中級',jp:'就活から入社まで',
+    description:'Giáo trình trung cấp theo hành trình từ tìm hiểu thực tập, ứng tuyển và phỏng vấn đến ngày đầu đi làm, báo cáo và xử lý dữ liệu trong công ty.',
+    focus:['Tìm việc & phỏng vấn','Gia nhập công ty','Điện thoại công việc'],
+    pdfs:[{label:'Giáo trình trung cấp',pages:140,path:'BJT_New book/2. 中級レベル ―就活から入社まで―/ロールプレイで学ぶ ビジネス日本語 - 中級レベル ―就活から入社まで― [Remake].pdf'}],
+    audio:range(15,n=>({label:`Roleplay ${pad(n,3)}`,path:`BJT_New book/2. 中級レベル ―就活から入社まで―/Audio 中級レベル ―就活から入社まで―/Roleplaybusiness_${pad(n,3)}.mp3`,format:'MP3'})),
+    note:'Có bài luyện điện thoại và đáp án gốc trong sách; phần quiz trên trang chép lại nguyên văn các lựa chọn đó.'
+  },
+  {
     id:'chokai',order:9,phase:4,kind:'Chuyên đề nghe',accent:'gold',
     title:'聴解・聴読解実力養成問題集',jp:'Luyện chuyên sâu nghe và nghe-đọc',
     description:'Quyển vàng luyện dày hai kỹ năng chiếm phần lớn áp lực thời gian của BJT: nghe hiểu và xử lý đồng thời audio với biểu đồ, email, bảng biểu.',
@@ -78,18 +96,49 @@ export const books=[
       ...range(76,n=>({label:`CD2 · Track ${pad(n)}`,path:`QUYỂN 9 . 聴解、聴読解 Quyển vàng/BJTchokai_CD2-${pad(n)}.mp3`,format:'MP3'}))
     ],
     note:'Mỗi track: nghe bắt ý, làm câu hỏi, nghe lại với trang sách, rồi shadowing câu khó.'
+  },
+  {
+    id:'businessWriting',order:10,phase:2,kind:'Email & văn bản thương mại',accent:'slate',
+    title:'タスクで学ぶ日本語ビジネスメール・ビジネス文書',jp:'上級レベル',
+    description:'Giáo trình nâng cao về email và văn bản thương mại: thông báo, cảm ơn, yêu cầu giao hàng, xin gia hạn, hỏi tồn kho, khiếu nại, báo cáo công tác và tờ trình nội bộ.',
+    focus:['Email thương mại','Văn bản nội bộ','Cách viết trang trọng'],
+    pdfs:[{label:'Giáo trình nâng cao',pages:134,path:'BJT_New book/3. 上級レベル タスクで学ぶ日本語ビジネスメール・ビジネス文書/タスクで学ぶ日本語ビジネスメール・ビジネス文書 - 上級レベル [Remake].pdf'}],
+    audio:[],
+    note:'Sách không có MP3 trong thư mục. Quiz dùng các bài luyện và phần đáp án/đáp án mẫu ở cuối sách.'
+  },
+  {
+    id:'globalCareer',order:11,phase:2,kind:'Role-play nâng cao',accent:'navy',
+    title:'ロールプレイで学ぶビジネス日本語 上級',jp:'グローバル企業でのキャリア構築をめざして',
+    description:'Giáo trình nhập vai nâng cao cho môi trường doanh nghiệp toàn cầu, từ tự giới thiệu, điện thoại, hẹn lịch đến xử lý khác biệt văn hóa và giao tiếp liên phòng ban.',
+    focus:['Giao tiếp cấp cao','Điện thoại & lịch hẹn','Khác biệt văn hóa'],
+    pdfs:[{label:'Giáo trình nâng cao',pages:198,path:'BJT_New book/4. 上級レベル グローバル企業でのキャリア構築をめざして/上級レベル グローバル企業でのキャリア構築をめざして [Remake].pdf'}],
+    audio:[
+      ...range(16,n=>({label:`Track ${pad(n)}`,path:`BJT_New book/4. 上級レベル グローバル企業でのキャリア構築をめざして/Audio 上級レベル グローバル企業でのキャリア構築をめざして/${pad(n)}.mp3`,format:'MP3'})),
+      {label:'Track 17-01',path:'BJT_New book/4. 上級レベル グローバル企業でのキャリア構築をめざして/Audio 上級レベル グローバル企業でのキャリア構築をめざして/17_01.mp3',format:'MP3'},
+      {label:'Track 17-02',path:'BJT_New book/4. 上級レベル グローバル企業でのキャリア構築をめざして/Audio 上級レベル グローバル企業でのキャリア構築をめざして/17_02.mp3',format:'MP3'}
+    ],
+    note:'Nghe hội thoại mẫu theo từng bài, sau đó đổi vai và thay thông tin để luyện phản xạ trong môi trường quốc tế.'
+  },
+  {
+    id:'practicalBusiness',order:12,phase:1,kind:'Hội thoại thực dụng',accent:'gray',
+    title:'実用ビジネス日本語 新装版',jp:'Practical Business Japanese',
+    description:'Mười chương hội thoại văn phòng thực dụng, tập trung vào chiến lược diễn đạt, mức độ lịch sự, tập quán công sở và mẫu email/văn bản dùng trong công việc.',
+    focus:['Hội thoại văn phòng','Mức độ lịch sự','Tập quán doanh nghiệp'],
+    pdfs:[{label:'Giáo trình thực dụng',pages:80,path:'実用ビジネス日本語.pdf'}],
+    audio:[],
+    note:'PDF có nhắc tới CD gốc nhưng thư mục hiện tại không có file audio, vì vậy trang chỉ hiển thị phần đọc và quiz từ bài tập trong sách.'
   }
 ];
 
 export const studyPlan=[
-  {phase:1,title:'Xây nền giao tiếp',description:'Học kính ngữ, chức năng giao tiếp và phản xạ trong công sở.',bookIds:['keigo','wakaru','nihongo30']},
-  {phase:2,title:'Hiểu đề bằng tiếng Việt',description:'Làm bộ song ngữ để nắm cấu trúc, script và cách giải thích đáp án.',bookIds:['kato']},
+  {phase:1,title:'Xây nền giao tiếp',description:'Học kính ngữ, chức năng giao tiếp và phản xạ trong công sở.',bookIds:['keigo','wakaru','roleplayBasic','nihongo30','roleplayCareer','practicalBusiness']},
+  {phase:2,title:'Giao tiếp & văn bản nâng cao',description:'Hiểu đề bằng bộ song ngữ, rồi luyện email, văn bản và role-play trong doanh nghiệp toàn cầu.',bookIds:['kato','businessWriting','globalCareer']},
   {phase:3,title:'Thi thử có bấm giờ',description:'Luân phiên ba bộ mô phỏng; sau mỗi đề phải phân loại và ôn lại lỗi.',bookIds:['official4','official6','moshi']},
   {phase:4,title:'Tăng lực nghe',description:'Dùng quyển vàng để luyện sâu 聴解・聴読解 và shadowing hằng ngày.',bookIds:['chokai']}
 ];
 
 export const resourceStats={
-  books:books.filter(book=>book.audio.length).length,
+  books:books.length,
   pdfs:books.reduce((sum,book)=>sum+book.pdfs.length,0),
   pages:books.reduce((sum,book)=>sum+book.pdfs.reduce((total,pdf)=>total+pdf.pages,0),0),
   audio:books.reduce((sum,book)=>sum+book.audio.length,0)

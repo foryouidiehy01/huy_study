@@ -1,4 +1,5 @@
 import {verifiedReadingQuestions} from './verified-reading-questions.js';
+import {newBookQuestions} from './new-book-questions.js';
 
 // Câu hỏi được chép từ chính các trang đáp án/giải thích trong docs.
 // sourcePage là số trang PDF (không phải số trang in trên sách).
@@ -73,7 +74,8 @@ katoAnswers.forEach((answers,index)=>sets.kato.push(...reading('kato',index+1,an
 
 // Chỉ xuất câu đã được đối chiếu nguyên văn. Không đưa OCR thô hoặc câu dùng ảnh
 // làm nội dung vào bài luyện.
-Object.keys(sets).forEach(bookId=>{sets[bookId]=verifiedReadingQuestions[bookId]||[]});
+const sourceSets={...verifiedReadingQuestions,...newBookQuestions};
+Object.keys(sourceSets).forEach(bookId=>{sets[bookId]=sourceSets[bookId]||[]});
 
 export const bookQuestions=Object.fromEntries(Object.entries(sets).map(([bookId,items])=>[
   bookId,

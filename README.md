@@ -8,8 +8,9 @@ Web app học cá nhân bằng tiếng Việt và tiếng Nhật. Frontend HTML/
 - 6 bài nền tảng BrSE: SDLC, yêu cầu, Q&A, tiêu chí nghiệm thu, test case, báo cáo/rủi ro.
 - 4 bài BJT: email, kính ngữ, lịch hẹn, đọc số liệu.
 - 12 câu BJT tự biên soạn: chấm đáp án, giải thích, luyện 10 phút, lưu câu sai và luyện lại.
-- Thư viện BJT từ thư mục `docs`: 9 PDF (1.036 trang), 525 track audio, lộ trình 4 giai đoạn và tiến độ theo từng tài liệu.
-- Toàn bộ 525 track đã được phân loại theo nguồn: 285 track có đáp án gốc để chấm tương tác, 113 track hướng dẫn/hội thoại không chấm và 127 track quyển vàng thiếu phần đáp án trong PDF nên được khóa chấm thay vì đoán.
+- Thư viện BJT từ thư mục `docs`: 13 sách, 14 PDF (1.815 trang), 592 track audio, lộ trình 4 giai đoạn và tiến độ theo từng tài liệu.
+- 160 câu chữ đã được số hóa từ bài tập/đáp án trong PDF; mỗi lựa chọn sai đều có giải thích và đường dẫn về đúng trang nguồn.
+- Toàn bộ 592 track đã được phân loại theo nguồn: 285 track có đáp án gốc để chấm tương tác, 180 track hướng dẫn/hội thoại không chấm và 127 track quyển vàng thiếu phần đáp án trong PDF nên được khóa chấm thay vì đoán.
 - Luyện nghe bằng giọng Nhật của thiết bị; hiện thông báo nếu thiếu giọng. Transcript có thể mở để đọc.
 - Bài làm tự luận tự lưu, gia sư AI hội thoại/chấm bài khi backend đã cấu hình.
 - Ghi chú, lịch sử hội thoại, xuất/nhập dữ liệu JSON.

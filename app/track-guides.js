@@ -30,6 +30,13 @@ wakaruAnswers.forEach((answer,index)=>{
 // Its quizzes are printed exercises, not one-answer-per-track test items.
 const nihongo30=fill(57,n=>sample(`Bài học · Track ${n}`,Math.min(128,14+Math.floor((n-1)*2)),'Hội thoại hoặc bài mẫu có script trong sách; nghe, đối chiếu rồi shadowing. Track này không phải câu trắc nghiệm có một đáp án.'));
 
+// The new role-play books contain model conversations rather than
+// one-answer-per-track exam items. Keep every supplied MP3 available without
+// inventing a score or answer key that is not printed in the books.
+const roleplayBasic=fill(34,n=>sample(`Role-play sơ–trung cấp · Track ${n}`,5,'Audio hội thoại mẫu đi kèm giáo trình. Nghe, mở đúng bài theo mục lục rồi đổi vai; track này không phải câu trắc nghiệm có một đáp án.'));
+const roleplayCareer=fill(15,n=>sample(`Role-play trung cấp · Track ${n}`,5,'Audio hội thoại mẫu từ giai đoạn tìm việc đến khi vào công ty. Track này dùng để nghe và nhập vai, không có đáp án trắc nghiệm riêng.'));
+const globalCareer=fill(18,n=>sample(`Role-play nâng cao · Track ${n}`,5,'Audio hội thoại mẫu cho môi trường doanh nghiệp toàn cầu. Track này dùng để nghe và nhập vai, không có đáp án trắc nghiệm riêng.'));
+
 const official4=fill(64,n=>({...sample('Hướng dẫn / ví dụ của đề',66),sourcePdfIndex:1}));
 putQuestions(official4,{start:3,section:'第1部 聴解 · セクション1',answers:[1,2,1,4,3],pages:66,sourcePdfIndex:1,answerPage:66});
 putQuestions(official4,{start:10,section:'第1部 聴解 · セクション2',answers:[2,2,4,1,1,3,3,3,2,1],pages:66,sourcePdfIndex:1,answerPage:66});
@@ -85,7 +92,7 @@ const chokai=[
   ...fill(76,n=>missing(`CD2 · Track ${n}`,n<=10?14+Math.floor((n-1)/2):n+8,chokaiNote))
 ];
 
-export const trackGuides={wakaru,nihongo30,official4,kato,official6,moshi,chokai};
+export const trackGuides={wakaru,roleplayBasic,nihongo30,official4,kato,official6,moshi,roleplayCareer,chokai,globalCareer};
 export const trackGuideStats=Object.values(trackGuides).flat().reduce((stats,item)=>{
   stats.total++;
   stats[item.kind]=(stats[item.kind]||0)+1;
