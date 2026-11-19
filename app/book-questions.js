@@ -31,6 +31,39 @@ const sets={
   ]
 };
 
+// 第3部 読解テスト: phần đọc độc lập, không dùng audio. Đáp án lấy từ bảng
+// 正答 của từng sách; trang câu hỏi/lời giải được giữ lại để người học đối chiếu.
+const reading=(bookId,section,answers,pages,explanationPages,extra={})=>answers.map((answer,index)=>({
+  number:`S${section}-${index+1}`,type:'第3部 読解テスト',sourcePdfIndex:extra.sourcePdfIndex||0,
+  sourcePage:explanationPages[index],questionPdfIndex:extra.questionPdfIndex||0,questionPage:pages[index],
+  scenario:'Đọc câu hỏi và bốn phương án ngay trên trang sách bên dưới.',
+  prompt:'Chọn đáp án đúng theo nội dung câu hỏi trong sách.',options:['1','2','3','4'],answer:answer-1,
+  why:`Đáp án gốc của sách là ${answer}. Phần lời giải gốc nằm ở trang PDF ${explanationPages[index]} và sẽ hiện sau khi kiểm tra.`,
+  optionWhy:[1,2,3,4].map(n=>n===answer?`Đúng: sách đánh dấu phương án ${n}.`:`Sai: phương án ${n} không phải đáp án trong bảng chính thức; xem phần lời giải gốc bên dưới để đối chiếu chi tiết.`),
+  explanationKind:'source',pdfQuestion:true,...extra
+}));
+const repeat=(page,count)=>Array(count).fill(page);
+
+sets.official4.push(
+  ...reading('official4',1,[4,2,4,1,1,3,3,1,4,1],[...repeat(22,3),...repeat(23,7)],repeat(66,10),{sourcePdfIndex:1}),
+  ...reading('official4',2,[3,2,2,1,3,3,4,3,2,3],[...repeat(24,5),...repeat(25,5)],repeat(66,10),{sourcePdfIndex:1}),
+  ...reading('official4',3,[3,2,1,4,3,2,2,3,3,4],Array.from({length:10},(_,i)=>26+i),repeat(66,10),{sourcePdfIndex:1})
+);
+sets.official6.push(
+  ...reading('official6',1,[2,4,2,2,2,1,3,2,3,2],[...repeat(47,5),...repeat(48,5)],[123,123,123,124,124,124,124,125,125,125]),
+  ...reading('official6',2,[2,3,2,2,1,4,2,4,2,2],[...repeat(49,5),...repeat(50,5)],[126,126,126,127,127,127,127,128,128,128]),
+  ...reading('official6',3,[2,4,3,2,4,4,2,3,2,4,2,3,3,2,3],Array.from({length:15},(_,i)=>51+i),Array.from({length:15},(_,i)=>129+i))
+);
+sets.moshi.push(
+  ...reading('moshi',1,[2,4,1,4,2,1,1,2,3,4],[...repeat(22,5),...repeat(23,5)],repeat(34,10)),
+  ...reading('moshi',2,[1,4,2,4,2,3,2,3,2,1],[...repeat(23,8),...repeat(24,2)],repeat(34,10)),
+  ...reading('moshi',3,[4,3,2,4,3,2,4,3,4,2,3,3,3,4,3],[24,...Array.from({length:14},(_,i)=>25+Math.floor(i/2))],Array.from({length:15},(_,i)=>35+Math.floor(i/2)))
+);
+
+const katoAnswers=[[3,3,2,4,4,2,4,3,1,2],[2,4,2,1,2,3,1,3,1,4],[1,3,3,3,3,4,2,3,4,4,2,2,1,4,1]];
+const katoPages=[[157,157,157,158,158,158,158,159,159,159],[160,160,160,161,161,161,162,162,162,163],Array.from({length:15},(_,i)=>164+i)];
+katoAnswers.forEach((answers,index)=>sets.kato.push(...reading('kato',index+1,answers,katoPages[index],katoPages[index],{katoCrop:true})));
+
 export const bookQuestions=Object.fromEntries(Object.entries(sets).map(([bookId,items])=>[
   bookId,
   items.map((item,index)=>({...item,id:`${bookId}-q${index+1}`,bookId}))
