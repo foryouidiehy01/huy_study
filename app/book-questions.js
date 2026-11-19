@@ -31,6 +31,10 @@ const sets={
   ]
 };
 
+// Các câu 聴解 ở trên đã có đầy đủ trong phần track audio. Không trộn chúng vào
+// bài luyện PDF; mục này chỉ chứa câu đọc độc lập của 第3部.
+Object.keys(sets).forEach(bookId=>{sets[bookId]=[]});
+
 // 第3部 読解テスト: phần đọc độc lập, không dùng audio. Đáp án lấy từ bảng
 // 正答 của từng sách; trang câu hỏi/lời giải được giữ lại để người học đối chiếu.
 const reading=(bookId,section,answers,pages,explanationPages,extra={})=>answers.map((answer,index)=>({
@@ -38,6 +42,7 @@ const reading=(bookId,section,answers,pages,explanationPages,extra={})=>answers.
   sourcePage:explanationPages[index],questionPdfIndex:extra.questionPdfIndex||0,questionPage:pages[index],
   scenario:'Đọc câu hỏi và bốn phương án ngay trên trang sách bên dưới.',
   prompt:'Chọn đáp án đúng theo nội dung câu hỏi trong sách.',options:['1','2','3','4'],answer:answer-1,
+  questionImage:`./quiz-images/${bookId}-s${section}-q${index+1}.jpg`,
   why:`Đáp án gốc của sách là ${answer}. Phần lời giải gốc nằm ở trang PDF ${explanationPages[index]} và sẽ hiện sau khi kiểm tra.`,
   optionWhy:[1,2,3,4].map(n=>n===answer?`Đúng: sách đánh dấu phương án ${n}.`:`Sai: phương án ${n} không phải đáp án trong bảng chính thức; xem phần lời giải gốc bên dưới để đối chiếu chi tiết.`),
   explanationKind:'source',pdfQuestion:true,...extra
