@@ -1,3 +1,5 @@
+import {verifiedReadingQuestions} from './verified-reading-questions.js';
+
 // Câu hỏi được chép từ chính các trang đáp án/giải thích trong docs.
 // sourcePage là số trang PDF (không phải số trang in trên sách).
 const sets={
@@ -68,6 +70,10 @@ sets.moshi.push(
 const katoAnswers=[[3,3,2,4,4,2,4,3,1,2],[2,4,2,1,2,3,1,3,1,4],[1,3,3,3,3,4,2,3,4,4,2,2,1,4,1]];
 const katoPages=[[157,157,157,158,158,158,158,159,159,159],[160,160,160,161,161,161,162,162,162,163],Array.from({length:15},(_,i)=>164+i)];
 katoAnswers.forEach((answers,index)=>sets.kato.push(...reading('kato',index+1,answers,katoPages[index],katoPages[index],{katoCrop:true})));
+
+// Chỉ xuất câu đã được đối chiếu nguyên văn. Không đưa OCR thô hoặc câu dùng ảnh
+// làm nội dung vào bài luyện.
+Object.keys(sets).forEach(bookId=>{sets[bookId]=verifiedReadingQuestions[bookId]||[]});
 
 export const bookQuestions=Object.fromEntries(Object.entries(sets).map(([bookId,items])=>[
   bookId,
